@@ -1,4 +1,4 @@
-export PYTHON_VERSION=3.11.1
+export PYTHON_VERSION=3.9.16
 export VIRTUAL_ENV := .coloring_book-$(PYTHON_VERSION)
 export PATH := $(VIRTUAL_ENV)/bin/:$(PATH)
 

@@ -1,41 +1,11 @@
 import click
-import cv2
-import requests
-import numpy as np
-from io import BytesIO
-from PIL import Image
-import datetime
-import os
+from utils import convert_image_to_sketch, get_image_from_url, save_sketch_image
+import customtkinter
+import tkinter
 
 GAUSSIAN_KERNEL = 21
-PATH = "/Users/changikchoi/Documents/Github/coloring_book/assets/chromedriver" 
 INPUT_IMAGE_PATH = "input_images"
 OUTPUT_IMAGE_PATH = "output_images" 
-
-def convert_image_to_sketch(image):
-    grey_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    invert = cv2.bitwise_not(grey_image)
-    gaussian_blur = cv2.GaussianBlur(invert, (GAUSSIAN_KERNEL,GAUSSIAN_KERNEL), 0)
-    invert_blur = cv2.bitwise_not(gaussian_blur)    
-    sketch = cv2.divide(grey_image, invert_blur, scale=256.0)
-
-    return sketch
-
-def get_image_from_url(url, file_name=None):
-    """
-    Download image from url, convert color
-    """
-    image_data = Image.open(BytesIO(requests.get(url).content))
-    image = np.array(image_data)
-    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-    if not file_name:
-        unique_number = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        file_name = f"image_{unique_number}"
-    file_path = os.path.join(INPUT_IMAGE_PATH, file_name)
-    # save file
-    cv2.imwrite(file_path, image)
-
-    return file_name, image
 
 @click.command()
 @click.option(
@@ -47,10 +17,76 @@ def get_image_from_url(url, file_name=None):
 )
 def main(key_word):
     url = "https://cdn.shopify.com/s/files/1/0363/6127/3479/products/pp-img-plush_medium-huggy_wuggy-1-front_1000x.jpg?v=1659727820"
-    file_name, image = get_image_from_url(url)
-    sketch = convert_image_to_sketch(image)
-    output_file_path = os.path.join(OUTPUT_IMAGE_PATH, file_name)
-    cv2.imwrite(output_file_path, sketch)
+    file_name, image = get_image_from_url(url, input_image_path=INPUT_IMAGE_PATH)
+    sketch_image = convert_image_to_sketch(image, gaussian_kernel=GAUSSIAN_KERNEL)
+    save_sketch_image(sketch_image, file_name, output_path=OUTPUT_IMAGE_PATH)
 
 if __name__ == "__main__":
-    main()
+    # main()
+    app = customtkinter.CTk()
+    app.geometry("800x780")
+    app.title("CustomTkinter simple_example.py")
+
+
+    def button_callback():
+        print("Button click", combobox_1.get())
+
+
+    def slider_callback(value):
+        progressbar_1.set(value)
+
+
+    frame_1 = customtkinter.CTkFrame(master=app)
+    frame_1.pack(pady=20, padx=60, fill="both", expand=True)
+
+    label_1 = customtkinter.CTkLabel(master=frame_1, justify=tkinter.LEFT)
+    label_1.pack(pady=10, padx=10)
+
+    progressbar_1 = customtkinter.CTkProgressBar(master=frame_1)
+    progressbar_1.pack(pady=10, padx=10)
+
+    button_1 = customtkinter.CTkButton(master=frame_1, command=button_callback)
+    button_1.pack(pady=10, padx=10)
+
+    slider_1 = customtkinter.CTkSlider(master=frame_1, command=slider_callback, from_=0, to=1)
+    slider_1.pack(pady=10, padx=10)
+    slider_1.set(0.5)
+
+    entry_1 = customtkinter.CTkEntry(master=frame_1, placeholder_text="CTkEntry")
+    entry_1.pack(pady=10, padx=10)
+
+    optionmenu_1 = customtkinter.CTkOptionMenu(frame_1, values=["Option 1", "Option 2", "Option 42 long long long..."])
+    optionmenu_1.pack(pady=10, padx=10)
+    optionmenu_1.set("CTkOptionMenu")
+
+    combobox_1 = customtkinter.CTkComboBox(frame_1, values=["Option 1", "Option 2", "Option 42 long long long..."])
+    combobox_1.pack(pady=10, padx=10)
+    optionmenu_1.set("CTkComboBox")
+
+    checkbox_1 = customtkinter.CTkCheckBox(master=frame_1)
+    checkbox_1.pack(pady=10, padx=10)
+
+    radiobutton_var = tkinter.IntVar(value=1)
+
+    radiobutton_1 = customtkinter.CTkRadioButton(master=frame_1, variable=radiobutton_var, value=1)
+    radiobutton_1.pack(pady=10, padx=10)
+
+    radiobutton_2 = customtkinter.CTkRadioButton(master=frame_1, variable=radiobutton_var, value=2)
+    radiobutton_2.pack(pady=10, padx=10)
+
+    switch_1 = customtkinter.CTkSwitch(master=frame_1)
+    switch_1.pack(pady=10, padx=10)
+
+    text_1 = customtkinter.CTkTextbox(master=frame_1, width=200, height=70)
+    text_1.pack(pady=10, padx=10)
+    text_1.insert("0.0", "CTkTextbox\n\n\n\n")
+
+    segmented_button_1 = customtkinter.CTkSegmentedButton(master=frame_1, values=["CTkSegmentedButton", "Value 2"])
+    segmented_button_1.pack(pady=10, padx=10)
+
+    tabview_1 = customtkinter.CTkTabview(master=frame_1, width=200, height=70)
+    tabview_1.pack(pady=10, padx=10)
+    tabview_1.add("CTkTabview")
+    tabview_1.add("Tab 2")
+
+    app.mainloop()
