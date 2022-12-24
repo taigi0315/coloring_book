@@ -1,5 +1,5 @@
 import click
-from utils import convert_image_to_sketch, get_image_from_url, save_sketch_image
+from utils import convert_image_to_sketch, get_image_from_url, save_image
 import customtkinter
 import tkinter
 
@@ -16,77 +16,14 @@ OUTPUT_IMAGE_PATH = "output_images"
     help="Type keyword to serach image"   
 )
 def main(key_word):
-    url = "https://cdn.shopify.com/s/files/1/0363/6127/3479/products/pp-img-plush_medium-huggy_wuggy-1-front_1000x.jpg?v=1659727820"
-    file_name, image = get_image_from_url(url, input_image_path=INPUT_IMAGE_PATH)
-    sketch_image = convert_image_to_sketch(image, gaussian_kernel=GAUSSIAN_KERNEL)
-    save_sketch_image(sketch_image, file_name, output_path=OUTPUT_IMAGE_PATH)
+    url ="https://ae01.alicdn.com/kf/Sdbe385c5d33d4d0eafab35161f26187f7/Rainbow-Friends-Plush-Game-Doll-Blue-Yellow-Monster-Long-Hand-Monster-Soft-Stuffed-Animal-Halloween-Christmas.jpg_Q90.jpg_.webp"
+    input_image = get_image_from_url(url)
+    sketch_image = convert_image_to_sketch(input_image, gaussian_kernel=GAUSSIAN_KERNEL)
+    # save input image
+    save_image(input_image, path=INPUT_IMAGE_PATH)
+    # save output image
+    save_image(sketch_image, path=OUTPUT_IMAGE_PATH)
 
 if __name__ == "__main__":
-    # main()
-    app = customtkinter.CTk()
-    app.geometry("800x780")
-    app.title("CustomTkinter simple_example.py")
-
-
-    def button_callback():
-        print("Button click", combobox_1.get())
-
-
-    def slider_callback(value):
-        progressbar_1.set(value)
-
-
-    frame_1 = customtkinter.CTkFrame(master=app)
-    frame_1.pack(pady=20, padx=60, fill="both", expand=True)
-
-    label_1 = customtkinter.CTkLabel(master=frame_1, justify=tkinter.LEFT)
-    label_1.pack(pady=10, padx=10)
-
-    progressbar_1 = customtkinter.CTkProgressBar(master=frame_1)
-    progressbar_1.pack(pady=10, padx=10)
-
-    button_1 = customtkinter.CTkButton(master=frame_1, command=button_callback)
-    button_1.pack(pady=10, padx=10)
-
-    slider_1 = customtkinter.CTkSlider(master=frame_1, command=slider_callback, from_=0, to=1)
-    slider_1.pack(pady=10, padx=10)
-    slider_1.set(0.5)
-
-    entry_1 = customtkinter.CTkEntry(master=frame_1, placeholder_text="CTkEntry")
-    entry_1.pack(pady=10, padx=10)
-
-    optionmenu_1 = customtkinter.CTkOptionMenu(frame_1, values=["Option 1", "Option 2", "Option 42 long long long..."])
-    optionmenu_1.pack(pady=10, padx=10)
-    optionmenu_1.set("CTkOptionMenu")
-
-    combobox_1 = customtkinter.CTkComboBox(frame_1, values=["Option 1", "Option 2", "Option 42 long long long..."])
-    combobox_1.pack(pady=10, padx=10)
-    optionmenu_1.set("CTkComboBox")
-
-    checkbox_1 = customtkinter.CTkCheckBox(master=frame_1)
-    checkbox_1.pack(pady=10, padx=10)
-
-    radiobutton_var = tkinter.IntVar(value=1)
-
-    radiobutton_1 = customtkinter.CTkRadioButton(master=frame_1, variable=radiobutton_var, value=1)
-    radiobutton_1.pack(pady=10, padx=10)
-
-    radiobutton_2 = customtkinter.CTkRadioButton(master=frame_1, variable=radiobutton_var, value=2)
-    radiobutton_2.pack(pady=10, padx=10)
-
-    switch_1 = customtkinter.CTkSwitch(master=frame_1)
-    switch_1.pack(pady=10, padx=10)
-
-    text_1 = customtkinter.CTkTextbox(master=frame_1, width=200, height=70)
-    text_1.pack(pady=10, padx=10)
-    text_1.insert("0.0", "CTkTextbox\n\n\n\n")
-
-    segmented_button_1 = customtkinter.CTkSegmentedButton(master=frame_1, values=["CTkSegmentedButton", "Value 2"])
-    segmented_button_1.pack(pady=10, padx=10)
-
-    tabview_1 = customtkinter.CTkTabview(master=frame_1, width=200, height=70)
-    tabview_1.pack(pady=10, padx=10)
-    tabview_1.add("CTkTabview")
-    tabview_1.add("Tab 2")
-
-    app.mainloop()
+    main()
+    

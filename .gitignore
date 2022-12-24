@@ -2,3 +2,5 @@
 .coloring_book*
 *__pycache__/
 .python-version
+input_images/
+output_images/
